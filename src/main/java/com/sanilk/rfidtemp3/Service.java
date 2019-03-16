@@ -11,14 +11,20 @@ public class Service {
 
     public InsertDataResponse insertData(InsertDataRequest insertDataRequest){
         RFIDData rfidData = new RFIDData();
-        rfidData.setData(insertDataRequest.getData());
-        rfidData.setDate(insertDataRequest.getDate());
+
         InsertDataResponse insertDataResponse = new InsertDataResponse();
 
-        rfidDataRepository.save(rfidData);
+        if(!insertDataRequest.getData().equals("") && insertDataRequest.getData() != null) {
+            rfidData.setData(insertDataRequest.getData());
+            rfidData.setDate(insertDataRequest.getDate());
 
-        insertDataResponse.setId(rfidData.getId());
-        insertDataResponse.setStatus("Successful!");
+            rfidDataRepository.save(rfidData);
+
+            insertDataResponse.setId(rfidData.getId());
+            insertDataResponse.setStatus("Successful!");
+        }else{
+            insertDataResponse.setStatus("Data seems to be empty. Failed.");
+        }
 
         return insertDataResponse;
     }
